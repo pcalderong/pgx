@@ -1,0 +1,45 @@
+-- CREATE TABLE pgx.ubicacion(
+--    id SERIAL PRIMARY KEY,
+--    nombre VARCHAR NOT NULL,
+--    parent INT
+-- );
+
+-- CREATE TABLE pgx.enfermedad(
+--    id SERIAL PRIMARY KEY,
+--    nombre VARCHAR NOT NULL,
+--    descripcion VARCHAR
+-- );
+
+-- CREATE TABLE pgx.grupo_metabolico(
+--    id SERIAL PRIMARY KEY,
+--    nombre VARCHAR NOT NULL,
+--    descripcion VARCHAR
+-- );
+
+-- CREATE TABLE pgx.tratamiento(
+--    id SERIAL PRIMARY KEY,
+--    nombre VARCHAR NOT NULL,
+--    descripcion VARCHAR,
+--    fk_enfermedad INTEGER REFERENCES pgx.enfermedad (id)
+-- );
+
+-- CREATE TABLE pgx.guia_terapeutica(
+--    id SERIAL PRIMARY KEY,
+--    recomendacion VARCHAR NOT NULL,
+--    fk_tratamiento INTEGER REFERENCES pgx.tratamiento (id),
+--    fk_grupo_metabolico INTEGER REFERENCES pgx.grupo_metabolico (id)
+-- );
+
+CREATE TABLE pgx.paciente(
+   id SERIAL PRIMARY KEY,
+   cedula VARCHAR NOT NULL,
+   fecha_nacimiento DATE NOT NULL,
+   alelo_1 VARCHAR NOT NULL,
+   alelo_2 VARCHAR NOT NULL,
+   batch INTEGER NOT NULL,
+   fk_tratamiento INTEGER REFERENCES pgx.tratamiento (id),
+   fk_grupo_metabolico INTEGER REFERENCES pgx.grupo_metabolico (id),
+   fk_pais INTEGER REFERENCES pgx.ubicacion (id),
+   fk_estado INTEGER REFERENCES pgx.ubicacion (id)
+);
+

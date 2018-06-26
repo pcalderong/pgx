@@ -1,0 +1,227 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bar1"></span>
+                <span class="icon-bar bar2"></span>
+                <span class="icon-bar bar3"></span>
+            </button>
+            <a class="navbar-brand" href="#">Dashboard</a>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <form action="{{ url_for('findRecomendaciones') }}" method="get">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <div class="form-group">
+                                        <label>Cédula</label>
+                                        <input type="text" name="inputCedula" class="form-control border-input">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="text-center">
+                                        <br>
+                                        <button type="submit" class="btn btn-info btn-fill"><i class="ti-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <hr />
+                                <div class="stats">
+                                    <i class="ti-view-list-alt"></i> Buscar Recomendaciones
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big icon-success text-center">
+                                    <i class="ti-target"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Sin Grupo Metabolico</p>
+                                    {{ gmCount}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <hr />
+                            <div class="stats">
+                                <i class="ti-calendar"></i> Registrados en Base de Datos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big icon-danger text-center">
+                                    <i class="ti-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>Pacientes</p>
+                                    {{ pacientes }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <hr />
+                            <div class="stats">
+                                <i class="ti-timer"></i> Actualizado hace unos segundos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="icon-big icon-info text-center">
+                                    <i class="ti-pencil-alt"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="numbers">
+                                    <p>{{ciudad}} - Mayor incidencia de PM</p>
+                                    {{ countLentos }}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <hr />
+                            <div class="stats">
+                                <i class="ti-reload"></i> Actualizado hace unos segundos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style='{{ toggleDiv}}'>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Recomendaciones para {{ cedula }}</h4>
+                        <p class="category">Las recomendaciones son basadas en fármaco {{tratamiento[1]}} para Grupo Metabólico {{grupo_metabolico}}</p>
+                    </div>
+                    <div class="content">
+                        <div class="typography-line">
+                            <ul>
+                            {% for r in recomendaciones %}
+                                <p class="text-info"> <i class="ti-arrow-right"></i> {{ r.recomendacion }}</p>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="footer">
+                            <hr>
+                            <div class="stats">
+                                <i class="ti-check"></i> Basadas en recomendaciones existentes en Base de Datos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Grupos Metabólicos - General</h4>
+                        <p class="category">Comportamiento de los {{pacientes}} pacientes registrados</p>
+                    </div>
+                    <div class="content">
+                        <div id="chartGM" class="ct-chart ct-perfect-fourth"></div>
+                        <div class="footer">
+                            <div class="chart-legend">
+                                <i class="fa fa-circle text-info"></i> Metabolizador Lento
+                                <i class="fa fa-circle text-danger"></i> Metabolizador Normal
+                                <i class="fa fa-circle text-warning"></i> Metabolizador Rapido
+                            </div>
+                            <hr>
+                            <div class="stats">
+                                <i class="ti-reload"></i> Updated 3 minutes ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Grupos Metabólicos - Por Edades</h4>
+                        <p class="category" id="lblEdad"></p>
+                        <select name="selectRangoEdades" id="selectRangoEdades" class="form-control border-input">
+                            <option selected="selected">-- Seleccione un Rango --</option>
+                          {% for key, value in rangoEdades.items() %}
+                            <option value="{{ key }}">{{ value[0] }} - {{ value[1]}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                    <div class="content">
+                        <div id="chartGMedades" class="ct-chart ct-perfect-fourth"></div>
+                        <div class="footer">
+                            <div class="chart-legend">
+                                <i class="fa fa-circle text-info"></i> Metabolizador Lento
+                                <i class="fa fa-circle text-danger"></i> Metabolizador Normal
+                                <i class="fa fa-circle text-warning"></i> Metabolizador Rapido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Grupos Metabólicos - Por Tratamiento</h4>
+                        <p class="category" id="lblTratamiento"></p>
+                        <select name="selectTratamiento" id="selectTratamiento" class="form-control border-input">
+                            <option selected="selected">-- Seleccione un Tratamiento --</option>
+                          {% for t in tratamientos %}
+                            <option value="{{ t[1] }}">{{ t[2] }} - {{ t[4]}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                    <div class="content">
+                        <div id="chartGMtratamientos" class="ct-chart ct-perfect-fourth"></div>
+                        <div class="footer">
+                            <div class="chart-legend">
+                                <i class="fa fa-circle text-info"></i> Metabolizador Lento
+                                <i class="fa fa-circle text-danger"></i> Metabolizador Normal
+                                <i class="fa fa-circle text-warning"></i> Metabolizador Rapido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

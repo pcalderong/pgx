@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bar1"></span>
+                <span class="icon-bar bar2"></span>
+                <span class="icon-bar bar3"></span>
+            </button>
+            <a class="navbar-brand" href="#">Enfermedades</a>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-4">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Nueva Enfermedad</h4>
+                    </div>
+                    <div class="content">
+                        <form action="{{ url_for('addEnfermedad') }}" method="post">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" name="inputNombre" class="form-control border-input" placeholder="Presion Arterial, Trombosis...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Descripcion</label>
+                                        <textarea rows="5" class="form-control border-input" name="inputDescripcion"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Agregar Enfermedad</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Enfermedades Registradas</h4>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                            </thead>
+                            <tbody>
+                                {% for e in listEnfermedades %}
+                                    <tr>
+                                        <td>{{ e.nombre }}</td>
+                                        <td>{{ e.descripcion }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bar1"></span>
+                <span class="icon-bar bar2"></span>
+                <span class="icon-bar bar3"></span>
+            </button>
+            <a class="navbar-brand" href="#">Pacientes</a>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Nuevo Paciente</h4>
+                    </div>
+                    <div class="content">
+                        <form action="{{ url_for('addPaciente') }}" method="post">
+                            <div class="row">
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        <label>Cédula</label>
+                                        <input type="text" name="inputCedula" class="form-control border-input" placeholder="X-XXXXXXXX">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 px-1">
+                                    <div class="form-group">
+                                        <label>Fecha de Nacimiento</label>
+                                        <input type="date" name="inputFechaNacimiento" class="form-control border-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        <label>Alelo 1</label>
+                                        <input type="text" name="inputAlelo1" class="form-control border-input">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 px-1">
+                                    <div class="form-group">
+                                        <label>Alelo 2</label>
+                                        <input type="text" name="inputAlelo2" class="form-control border-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        <label>Grupo Metabolico</label>
+                                        <select name="selectGMetabolico" class="form-control border-input">
+                                          {% for g in gruposMetabolicos %}
+                                            <option value="{{ g.id }}">{{ g.nombre }}</option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 px-1">
+                                    <div class="form-group">
+                                        <label>Tratamiento</label>
+                                        <select name="selectTratamiento" class="form-control border-input">
+                                          {% for t in tratamientos %}
+                                            <option value="{{ t[1] }}">{{ t[2] }} - {{ t[4]}}</option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        <label>Pais</label>
+                                        <select name="selectPais" id="selectPais" class="form-control border-input">
+                                            <option>--Seleccione un Pais--</option>
+                                          {% for p in paises %}
+                                            <option value="{{ p.id }}">{{ p.nombre }} </option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 px-1">
+                                    <div class="form-group">
+                                        <label>Ciudad</label>
+                                        <select name="selectCiudad" id="selectCiudad" class="form-control border-input">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Agregar Paciente</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-log-6 col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Agregar Multiples Pacientes</h4>
+                    </div>
+                    <div class="content">
+                        <form action="{{ url_for('uploadFilePacientes') }}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                        <label>Archivo</label>
+                                        <input type="file" name="filePacientes" class="form-control border-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Subir Archivo</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Pacientes Registrados</h4>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <th>Cédula</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Alelo 1</th>
+                                <th>Alelo 2</th>
+                                <th>Tratamiento</th>
+                                <th>Grupo Metabolico</th>
+                                <th>Pais</th>
+                            </thead>
+                            <tbody>
+                                {% for p in pacientes %}
+                                    <tr>
+                                        <td>{{ p.cedula }}</td>
+                                        <td>{{ p.fecha_nacimiento }}</td>
+                                        <td>{{ p.alelo_1 }}</td>
+                                        <td>{{ p.alelo_2 }}</td>
+                                        <td>{{ p[5] }}</td>
+                                        <td>{{ p[6] }}</td>
+                                        <td>{{ p[7] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

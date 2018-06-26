@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bar1"></span>
+                <span class="icon-bar bar2"></span>
+                <span class="icon-bar bar3"></span>
+            </button>
+            <a class="navbar-brand" href="#">Predicción de Grupos Metabólicos</a>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Generación de Predicciones</h4>
+                        <p class="category">Machine Learning with Scikit-learn</p>
+                    </div>
+                    <div class="content">
+                        <form action="{{ url_for('predictGM') }}" method="get">
+                            <div class="typo-line">
+                                    <p><span class="category">Información:</span> La predicción consiste en la ejecución
+                                        de un mecanismo de aprendizaje de máquinas para clasificar los pacientes que se
+                                        identifiquen bajo el grupo metabólico "No conocido", con el fin de generar estadísticas
+                                        más acertadas y generar contenido que alimente la toma de decisiones, para resultados de
+                                        clasificación mas precisos.</p>
+                            </div>
+                            <div class="typo-line">
+                                    <p class="category">ATENCIÓN:</p>
+                                    <p class="text-danger">
+                                        Text Danger - Light Bootstrap Table Heading and complex bootstrap dashboard you've ever seen on the internet.
+                                    </p>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Ejecutar</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Predicciones</h4>
+                    </div>
+                    <div class="content">
+                        <div class="typo-line">
+                                <p class="category">ATENCIÓN:</p>
+                                <p class="text-danger">
+                                    Los siguientes resultados son las predicciones realizadas por SVM para identificar
+                                    el grupo metabólico de los pacientes que estan registrados como "No Conocidos". Al presionar "Guardar",
+                                    las predicciones se registrarán como los nuevos Grupos Metabólicos para los pacientes enlistados
+                                </p>
+                        </div>
+                        <div class="typo-line">
+                                <h2></h2><p class="text-success">
+                                    {{mensajeSuccess}}
+                                </p></h2>
+                        </div>
+                        <form action="{{ url_for('applyPrediccion') }}" method="get">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Guardar</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                        <div class="table-responsive table-full-width">
+                            <table class="table table-striped">
+                            <thead>
+                                <th>Cédula</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Alelo 1</th>
+                                <th>Alelo 2</th>
+                                <th>Tratamiento</th>
+                                <th>Grupo Metabolico - Original</th>
+                                <th>Grupo Metabolico - Predicción</th>
+                            </thead>
+                            <tbody>
+                                {% for p in pacientes %}
+                                    <tr>
+                                        <td>{{ p[1] }}</td>
+                                        <td>{{ p[2] }}</td>
+                                        <td>{{ p[3] }}</td>
+                                        <td>{{ p[4] }}</td>
+                                        <td>{{ p[5] }}</td>
+                                        <td>{{ p[6] }}</td>
+                                        <td>{{ p[7]}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
